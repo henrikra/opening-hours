@@ -104,7 +104,9 @@ describe('simpleOpeningHours', () => {
       monday: [],
       tuesday: [ 
         {type: "open", value: 36000}, 
-        {type: "close", value: 64800}
+        {type: "close", value: 64800},
+        {type: "open", value: 82800}, 
+        {type: "close", value: 84600}
       ],
       wednesday: [],
       thursday: [ 
@@ -125,7 +127,7 @@ describe('simpleOpeningHours', () => {
       ]
     };
     expect(simpleOpeningHours(openingHoursFullWeek)).equal(
-      'Monday: Closed\nTuesday: 10 am - 6 pm\nWednesday: Closed\nThursday: 10 am - 6 pm\nFriday: 10 am - 1 am\nSaturday: 10 am - 1 am\nSunday: 12 pm - 9 pm'
+      'Monday: Closed\nTuesday: 10 am - 6 pm, 11 pm - 11.30 pm\nWednesday: Closed\nThursday: 10 am - 6 pm\nFriday: 10 am - 1 am\nSaturday: 10 am - 1 am\nSunday: 12 pm - 9 pm'
     );
   });
 });
