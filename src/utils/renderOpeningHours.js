@@ -29,7 +29,7 @@ export function simpleOpeningHours(fullWeek) {
     finalInput += hasClosing ? `${_.upperFirst(weekday)}: ` : '';
 
     if (!_.size(openingHours)) {
-      finalInput += 'Closed';
+      finalInput += 'Closed\n';
       return finalInput;
     }
 
@@ -44,7 +44,9 @@ export function simpleOpeningHours(fullWeek) {
       hasClosing = openingHour.type === 'close';
     });
 
+    finalInput += hasClosing ? '\n' : '';
+
   });
 
-  return finalInput;
+  return finalInput.slice(0, -1);
 }
