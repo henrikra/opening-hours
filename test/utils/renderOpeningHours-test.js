@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { renderOpeningHours } from '../../src/utils/renderOpeningHours';
+import { renderOpeningHours, openingHoursForWeek } from '../../src/utils/renderOpeningHours';
 
 describe('renderOpeningHours', () => {
   it('contains weekday starting with capital letter', () => {
@@ -25,5 +25,43 @@ describe('renderOpeningHours', () => {
       {type: 'close', value: 43199}
     ];
     expect(renderOpeningHours('tuesday', openingHours)).to.equal('Tuesday: 10.00:10 am - 11.59:59 am');
+  });
+});
+
+describe('openingHoursForWeek', () => {
+  it('return array of right opening hours', () => {
+    const openingHoursFullWeek = {
+      monday: [],
+      tuesday: [
+        {type: 'open', value: 36000},
+        {type: 'close', value: 64800}
+      ],
+      wednesday: [],
+      thursday: [
+        {type: 'open', value: 32400},
+        {type: 'close', value: 72000}
+      ],
+      friday: [
+        {type: 'open', value: 32400},
+        {type: 'close', value: 72000}
+      ],
+      saturday: [
+        {type: 'open', value: 32400},
+        {type: 'close', value: 72000}
+      ],
+      sunday: [
+        {type: 'open', value: 32400},
+        {type: 'close', value: 72000}
+      ]
+    };
+    expect(openingHoursForWeek(openingHoursFullWeek)).deep.equal([
+      'Monday: Closed',
+      'Tuesday: 10 am - 6 pm',
+      'Wednesday: Closed',
+      'Thursday: 9 am - 8 pm',
+      'Friday: 9 am - 8 pm',
+      'Saturday: 9 am - 8 pm',
+      'Sunday: 9 am - 8 pm'
+    ]);
   });
 });
