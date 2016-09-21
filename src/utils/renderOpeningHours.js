@@ -20,3 +20,31 @@ export function openingHoursForWeek(openingHoursFullWeek) {
     renderOpeningHours(weekday, openingHours)
   );
 }
+
+export function simpleOpeningHours(fullWeek) {
+  let finalInput = '';
+  let hasClosing = true;
+
+  _.each(fullWeek, (openingHours, weekday) => {
+    finalInput += hasClosing ? `${_.upperFirst(weekday)}: ` : '';
+
+    if (!_.size(openingHours)) {
+      finalInput += 'Closed';
+      return finalInput;
+    }
+
+    _.each(openingHours, (openingHour, index) => {
+      const hasComma = openingHour.type === 'open' && index > 1;
+      const hasDash = openingHour.type === 'close';
+
+
+      finalInput += !hasClosing && index === 0 && openingHour.type === 'close' 
+        ? `${hasDash ? ' - ' : ''}${secondsTo12HourClock(openingHour.value)}\n${_.upperFirst(weekday)}: `
+        : `${hasComma ? ', ' : ''}${hasDash ? ' - ' : ''}${secondsTo12HourClock(openingHour.value)}`;
+      hasClosing = openingHour.type === 'close';
+    });
+
+  });
+
+  return finalInput;
+}

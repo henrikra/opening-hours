@@ -1,6 +1,10 @@
 import { expect } from 'chai';
 
-import { renderOpeningHours, openingHoursForWeek } from '../../src/utils/renderOpeningHours';
+import {
+  renderOpeningHours,
+  openingHoursForWeek,
+  simpleOpeningHours
+} from '../../src/utils/renderOpeningHours';
 
 describe('renderOpeningHours', () => {
   it('contains weekday starting with capital letter', () => {
@@ -73,5 +77,55 @@ describe('openingHoursForWeek', () => {
       'Saturday: 9 am - 8 pm',
       'Sunday: 9 am - 8 pm'
     ]);
+  });
+});
+
+describe('simpleOpeningHours', () => {
+  it('return whole shit', () => {
+    const openingHoursFullWeek = {
+      friday: [ 
+        {type: "open", value: 64800}
+      ],
+      saturday: [
+        {type: "close", value: 3600},
+        {type: "open", value: 32400},
+        {type: "close", value: 39600},
+        {type: "open", value: 57600},
+        {type: "close", value: 82800}
+      ]
+    };
+    expect(simpleOpeningHours(openingHoursFullWeek)).equal(
+      'Friday: 6 pm - 1 am\nSaturday: 9 am - 11 am, 4 pm - 11 pm'
+    );
+  });
+
+  it('returns example data in assignment right way', () => {
+    const openingHoursFullWeek = {
+      monday: [],
+      tuesday: [ 
+        {type: "open", value: 36000}, 
+        {type: "close", value: 64800}
+      ],
+      wednesday: [],
+      thursday: [ 
+        {type: "open", value: 36000}, 
+        {type: "close", value: 64800}
+      ],
+      friday: [ 
+        {type: "open", value: 36000} 
+      ],
+      saturday: [ 
+        {type: "close", value: 3600},
+        {type: "open", value: 36000}
+      ],
+      sunday: [
+        {type: "close", value: 3600},
+        {type: "open", value: 43200}, 
+        {type: "close", value: 75600}
+      ]
+    };
+    expect(simpleOpeningHours(openingHoursFullWeek)).equal(
+      'Monday: Closed\nTuesday: 10 am - 6 pm\nWednesday: Closed\nThursday: 10 am - 6 pm\nFriday: 10 am - 1 am\nSaturday: 10 am - 1 am\nSunday: 12 pm - 9 pm'
+    );
   });
 });
