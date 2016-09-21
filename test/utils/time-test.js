@@ -28,6 +28,6 @@ describe('secondsTo12HourClock', () => {
   });
 
   it('formats when midday starts', () => {
-    expect(secondsTo12HourClock(43200)).to.equal('0 pm');
+    expect(secondsTo12HourClock(43200)).to.equal('12 pm');
   });
 });

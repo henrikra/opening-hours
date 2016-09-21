@@ -15,7 +15,7 @@ export function secondsTo12HourClock(seconds) {
 
   let finalOutput = '';
 
-  finalOutput += fullHours >= 12 ? fullHours - 12 : fullHours;
+  finalOutput += fullHours > 12 ? fullHours - 12 : fullHours;
   if (_.isNumber(fullMinutes)) {
     finalOutput += `.${fullMinutes < 10 ? '0' : ''}${fullMinutes}`;
   }
