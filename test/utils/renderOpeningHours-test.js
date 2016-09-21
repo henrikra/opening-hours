@@ -26,6 +26,16 @@ describe('renderOpeningHours', () => {
     ];
     expect(renderOpeningHours('tuesday', openingHours)).to.equal('Tuesday: 10.00:10 am - 11.59:59 am');
   });
+
+  it('prints multiple opening hours', () => {
+    const openingHours = [
+      {type: "open", value: 32400},
+      {type: "close", value: 39600},
+      {type: "open", value: 57600},
+      {type: "close", value: 82800}
+    ];
+    expect(renderOpeningHours('tuesday', openingHours)).to.equal('Tuesday: 9 am - 11 am, 4 pm - 11 pm');
+  });
 });
 
 describe('openingHoursForWeek', () => {

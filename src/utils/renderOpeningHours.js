@@ -6,11 +6,12 @@ export function renderOpeningHours(weekday, openingHours) {
   const openingHoursFromEarliestToLatest = _.sortBy(openingHours, ['value']);
 
   let finalInput = '';
-  _.each(openingHoursFromEarliestToLatest, (openingHour) => {
+  _.each(openingHoursFromEarliestToLatest, (openingHour, index) => {
     const humanReadableTime = secondsTo12HourClock(openingHour.value);
-    finalInput += openingHour.type === 'open' ? `${humanReadableTime} - ` : humanReadableTime;
+    const separator = openingHour.type === 'open' && index > 0 ? ', ' : '';
+    finalInput += openingHour.type === 'open' ? `${separator}${humanReadableTime} - ` : humanReadableTime;
   });
-
+  
   return `${_.upperFirst(weekday)}: ${!_.size(openingHours) ? 'Closed' : finalInput}`;
 }
 
