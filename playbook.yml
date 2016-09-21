@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  remote_user: vagrant
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+    - name: Install Git
+      apt:
+        name: git
+    - name: Download Node.js
+      get_url:
+        url: http://deb.nodesource.com/setup_6.x
+        dest: /tmp/node-setup
+    - name: Update NodeJS repository
+      shell: "bash node-setup"
+      args:
+        chdir: /tmp
+    - name: Install Node.js
+      apt:
+        name: "{{ item }}"
+      with_items:
+        - nodejs
+        - build-essential
+    - name: Clean up
+      file:
+        path: /tmp/node-setup
+        state: absent
