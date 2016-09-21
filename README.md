@@ -1,11 +1,11 @@
-# Ultimate React - Redux starter
+# Opening hours
 
-Starter for your React-Redux app
+Training app made in a time limit
 
 ### How to setup environment
 
 ```
-> git clone git@github.com:henrikra/ultimate-react-redux-starter.git
+> git clone git@github.com:henrikra/opening-hours.git
 > vagrant up
 > vagrant ssh
 > cd /vagrant
