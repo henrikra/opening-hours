@@ -21,32 +21,44 @@ export function openingHoursForWeek(openingHoursFullWeek) {
   );
 }
 
+const weekdays = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+]
+
 export function simpleOpeningHours(fullWeek) {
-  const fullWeekOpeningHours = _.reduce(fullWeek, (finalResult, openingHours, weekday) => {
-    const weekdayStart = `${_.upperFirst(weekday)}: `;
+  const fullWeekOpeningHours = _.reduce(fullWeek, (allOpeningHours, openingHours, weekday) => {
+    const weekdayUppered = _.upperFirst(weekday);
 
-    finalResult.text += finalResult.hasClosing ? weekdayStart : '';
+    if (!_.size(openingHours)) {
+      allOpeningHours[weekdayUppered] = 'Closed';
+    } else {
+      const openingHoursForOneDay = _.reduce(openingHours, (result, openingHour, index) => {
+        const formattedTime = secondsTo12HourClock(openingHour.value);
+        if (openingHour.type === 'open') {
+          result += index > 1 ? ', ' : '';
+          result += formattedTime;
+        } else {
+          if (index === 0) {
+            const previousDay = _.indexOf(weekdays, weekdayUppered) - 1;
+            allOpeningHours[_.nth(weekdays, previousDay)] += ` - ${formattedTime}`;
+          } else {
+            result += ` - ${formattedTime}`;
+          }
+        }
+        return result;
+      }, '');
 
-    const openingHoursForOneDay = _.reduce(openingHours, (result, openingHour, index) => {
-      if (openingHour.type === 'open') {
-        result.hasClosing = false;
-        result.result += index > 1 ? ', ' : '';
-        result.result += secondsTo12HourClock(openingHour.value);
-      } else {
-        result.result += ` - ${secondsTo12HourClock(openingHour.value)}${index === 0 ? '\n' : ''}`;
-        result.result += index === 0 && !result.hasClosing ? weekdayStart : '';
-        result.hasClosing = true;
-      }
-      return result;
-    }, {result: ''});
+      allOpeningHours[weekdayUppered] = openingHoursForOneDay;
+    }
 
-    const hasClosing = !_.size(openingHours) || openingHoursForOneDay.hasClosing;
+    return allOpeningHours;
+  }, {});
 
-    finalResult.text += !_.size(openingHours) ? 'Closed' : `${openingHoursForOneDay.result}`;
-    finalResult.text += hasClosing ? '\n' : '';
-
-    return _.assign({}, finalResult, {hasClosing});
-  }, {text: '', hasClosing: true});
-
-  return fullWeekOpeningHours.text.trim();
+  return fullWeekOpeningHours;
 }

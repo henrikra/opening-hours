@@ -94,9 +94,10 @@ describe('simpleOpeningHours', () => {
         {type: "close", value: 82800}
       ]
     };
-    expect(simpleOpeningHours(openingHoursFullWeek)).equal(
-      'Friday: 6 pm - 1 am\nSaturday: 9 am - 11 am, 4 pm - 11 pm'
-    );
+    expect(simpleOpeningHours(openingHoursFullWeek)).deep.equal({
+      Friday: '6 pm - 1 am',
+      Saturday: '9 am - 11 am, 4 pm - 11 pm'
+    });
   });
 
   it('returns example data in assignment right way', () => {
@@ -126,8 +127,14 @@ describe('simpleOpeningHours', () => {
         {type: "close", value: 75600}
       ]
     };
-    expect(simpleOpeningHours(openingHoursFullWeek)).equal(
-      'Monday: Closed\nTuesday: 10 am - 6 pm, 11 pm - 11.30 pm\nWednesday: Closed\nThursday: 10 am - 6 pm\nFriday: 10 am - 1 am\nSaturday: 10 am - 1 am\nSunday: 12 pm - 9 pm'
-    );
+    expect(simpleOpeningHours(openingHoursFullWeek)).deep.equal({
+      Monday: 'Closed',
+      Tuesday: '10 am - 6 pm, 11 pm - 11.30 pm',
+      Wednesday: 'Closed',
+      Thursday: '10 am - 6 pm',
+      Friday: '10 am - 1 am',
+      Saturday: '10 am - 1 am',
+      Sunday: '12 pm - 9 pm'
+    });
   });
 });
