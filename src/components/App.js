@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 import openingHoursMock from '../mock-data/openingHours.json';
-import { simpleOpeningHours } from '../utils/renderOpeningHours';
+import { getOpeningHours } from '../utils/renderOpeningHours';
 
 require('../../style/style.css');
 
 export default class App extends Component {
   render() {
-    const openingHoursForWeek = simpleOpeningHours(openingHoursMock);
+    const openingHoursForWeek = getOpeningHours(openingHoursMock);
     return (
       <ol>
         {_.map(openingHoursForWeek, (openingHours, weekday) => {
