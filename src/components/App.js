@@ -9,9 +9,11 @@ export default class App extends Component {
   render() {
     const openingHoursForWeek = simpleOpeningHours(openingHoursMock);
     return (
-      <pre>
-        {openingHoursForWeek}
-      </pre>
+      <ol>
+        {_.map(openingHoursForWeek, (openingHours, weekday) => {
+          return <li key={weekday}>{weekday}: {openingHours}</li>;
+        })}
+      </ol>
     );
   }
 }
