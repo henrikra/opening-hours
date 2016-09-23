@@ -22,31 +22,31 @@ export function openingHoursForWeek(openingHoursFullWeek) {
 }
 
 export function simpleOpeningHours(fullWeek) {
-  let finalInput = '';
-  let hasClosing = true;
+  const fullWeekOpeningHours = _.reduce(fullWeek, (finalResult, openingHours, weekday) => {
+    const weekdayStart = `${_.upperFirst(weekday)}: `;
 
-  _.each(fullWeek, (openingHours, weekday) => {
-    finalInput += hasClosing ? `${_.upperFirst(weekday)}: ` : '';
+    finalResult.text += finalResult.hasClosing ? weekdayStart : '';
 
-    if (!_.size(openingHours)) {
-      finalInput += 'Closed\n';
-      return finalInput;
-    }
+    const openingHoursForOneDay = _.reduce(openingHours, (result, openingHour, index) => {
+      if (openingHour.type === 'open') {
+        result.hasClosing = false;
+        result.result += index > 1 ? ', ' : '';
+        result.result += secondsTo12HourClock(openingHour.value);
+      } else {
+        result.result += ` - ${secondsTo12HourClock(openingHour.value)}${index === 0 ? '\n' : ''}`;
+        result.result += index === 0 && !result.hasClosing ? weekdayStart : '';
+        result.hasClosing = true;
+      }
+      return result;
+    }, {result: ''});
 
-    _.each(openingHours, (openingHour, index) => {
-      const hasComma = openingHour.type === 'open' && index > 1;
-      const hasDash = openingHour.type === 'close';
+    const hasClosing = !_.size(openingHours) || openingHoursForOneDay.hasClosing;
 
+    finalResult.text += !_.size(openingHours) ? 'Closed' : `${openingHoursForOneDay.result}`;
+    finalResult.text += hasClosing ? '\n' : '';
 
-      finalInput += !hasClosing && index === 0 && openingHour.type === 'close' 
-        ? `${hasDash ? ' - ' : ''}${secondsTo12HourClock(openingHour.value)}\n${_.upperFirst(weekday)}: `
-        : `${hasComma ? ', ' : ''}${hasDash ? ' - ' : ''}${secondsTo12HourClock(openingHour.value)}`;
-      hasClosing = openingHour.type === 'close';
-    });
+    return _.assign({}, finalResult, {hasClosing});
+  }, {text: '', hasClosing: true});
 
-    finalInput += hasClosing ? '\n' : '';
-
-  });
-
-  return finalInput.slice(0, -1);
+  return fullWeekOpeningHours.text.trim();
 }
