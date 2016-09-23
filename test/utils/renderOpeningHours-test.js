@@ -2,8 +2,8 @@ import { expect } from 'chai';
 
 import { getOpeningHours } from '../../src/utils/renderOpeningHours';
 
-describe('simpleOpeningHours', () => {
-  it('return array of right opening hours', () => {
+describe('getOpeningHours', () => {
+  it('returns array of right opening hours', () => {
     const openingHoursFullWeek = {
       monday: [],
       tuesday: [
@@ -12,16 +12,16 @@ describe('simpleOpeningHours', () => {
       ],
       wednesday: [],
       thursday: [
-        {type: 'open', value: 32400},
-        {type: 'close', value: 72000}
+        {type: 'open', value: 28800}
       ],
       friday: [
+        {type: 'close', value: 5400},
         {type: 'open', value: 32400},
-        {type: 'close', value: 72000}
       ],
       saturday: [
-        {type: 'open', value: 32400},
-        {type: 'close', value: 72000}
+        {type: 'close', value: 7200},
+        {type: 'open', value: 7200},
+        {type: 'close', value: 75600}
       ],
       sunday: [
         {type: 'open', value: 32400},
@@ -32,14 +32,14 @@ describe('simpleOpeningHours', () => {
       Monday: 'Closed',
       Tuesday: '10 am - 6 pm',
       Wednesday: 'Closed',
-      Thursday: '9 am - 8 pm',
-      Friday: '9 am - 8 pm',
-      Saturday: '9 am - 8 pm',
+      Thursday: '8 am - 1.30 am',
+      Friday: '9 am - 2 am',
+      Saturday: '2 am - 9 pm',
       Sunday: '9 am - 8 pm'
     });
   });
 
-  it('return whole shit', () => {
+  it('returns week with less than 7 days', () => {
     const openingHoursFullWeek = {
       friday: [ 
         {type: "open", value: 64800}
