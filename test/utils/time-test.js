@@ -30,4 +30,8 @@ describe('secondsTo12HourClock', () => {
   it('formats when midday starts', () => {
     expect(secondsTo12HourClock(43200)).to.equal('12 pm');
   });
+
+  it('formats one hour after midday', () => {
+    expect(secondsTo12HourClock(46800)).to.equal('1 pm');
+  });
 });
